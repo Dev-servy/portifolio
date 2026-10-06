@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Nycollas Holanda — Desenvolvedor de Software</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #09090b;
+            --fg: #fafafa;
+            --mut: #a1a1aa;
+            --dim: #71717a;
+            --line: #27272a;
+            --card: #0f0f12;
+            --card2: #18181b;
+            --sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+            --mono: 'Geist Mono', ui-monospace, Menlo, monospace;
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            color-scheme: dark
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: inherit
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: calc(72px + env(safe-area-inset-top, 0px))
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: var(--sans);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        .glow {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background: radial-gradient(520px circle at var(--x, 50%) var(--y, 30%), rgba(255, 255, 255, .075), transparent 70%)
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 20;
+            padding-top: env(safe-area-inset-top, 0px);
+            background: rgba(9, 9, 11, .72);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--line)
+        }
+
+        .bar {
+            max-width: 1080px;
+            margin: 0 auto;
+            height: 64px;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            gap: 24px
+        }
+
+        .logo {
+            font-weight: 600;
+            letter-spacing: -.02em
+        }
+
+        nav {
+            margin-left: auto;
+            display: flex;
+            gap: 4px
+        }
+
+        nav a {
+            padding: 6px 12px;
+            border-radius: 8px;
+            color: var(--mut);
+            font-size: 14px;
+            transition: color .2s, background .2s
+        }
+
+        nav a:hover {
+            color: var(--fg);
+            background: var(--card2)
+        }
+
+        .icons {
+            display: flex;
+            gap: 2px;
+            padding-left: 16px;
+            border-left: 1px solid var(--line)
+        }
+
+        .icons a {
+            width: 34px;
+            height: 34px;
+            display: grid;
+            place-items: center;
+            border-radius: 8px;
+            color: var(--mut);
+            transition: color .2s, background .2s
+        }
+
+        .icons a:hover {
+            color: var(--fg);
+            background: var(--card2)
+        }
+
+        svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        main,
+        footer {
+            position: relative;
+            z-index: 1;
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 24px
+        }
+
+        section {
+            padding: 96px 0
+        }
+
+        h1 {
+            font-size: clamp(40px, 7.4vw, 84px);
+            line-height: 1.02;
+            letter-spacing: -.045em;
+            font-weight: 600;
+            margin: 0 0 24px
+        }
+
+        h2 {
+            font-size: clamp(26px, 3.6vw, 36px);
+            letter-spacing: -.03em;
+            margin: 0 0 40px;
+            font-weight: 600
+        }
+
+        .hero {
+            min-height: 100svh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 120px
+        }
+
+        .hero .hi {
+            font-family: var(--mono);
+            font-size: 14px;
+            color: var(--mut);
+            margin-bottom: 20px
+        }
+
+        .hero h1 span {
+            color: var(--dim)
+        }
+
+        .lead {
+            max-width: 600px;
+            color: var(--mut);
+            font-size: 18px;
+            margin: 0 0 36px
+        }
+
+        .btns {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 15px;
+            border: 1px solid var(--line);
+            background: transparent;
+            color: var(--fg);
+            cursor: pointer;
+            font-family: inherit;
+            transition: background .2s, border-color .2s, transform .2s
+        }
+
+        .btn:hover {
+            background: var(--card2);
+            border-color: #3f3f46
+        }
+
+        .btn.pri {
+            background: var(--fg);
+            color: var(--bg);
+            border-color: var(--fg)
+        }
+
+        .btn.pri:hover {
+            background: #e4e4e7
+        }
+
+        .btn:focus-visible,
+        a:focus-visible {
+            outline: 2px solid var(--fg);
+            outline-offset: 3px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            transition: border-color .25s, background .25s
+        }
+
+        .card:hover {
+            border-color: #3f3f46;
+            background: var(--card2)
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 18px;
+            letter-spacing: -.02em
+        }
+
+        .card p {
+            margin: 0;
+            color: var(--mut);
+            font-size: 15px
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px
+        }
+
+        .tag {
+            font-family: var(--mono);
+            font-size: 12px;
+            padding: 3px 9px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            color: var(--mut)
+        }
+
+        .links {
+            display: flex;
+            gap: 16px;
+            margin-top: auto;
+            padding-top: 6px;
+            font-size: 14px;
+            color: var(--mut)
+        }
+
+        .links a {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            transition: color .2s
+        }
+
+        .links a:hover {
+            color: var(--fg)
+        }
+
+        .links svg {
+            width: 15px;
+            height: 15px
+        }
+
+        .skills {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px
+        }
+
+        .skills h3 {
+            margin: 0 0 4px;
+            font-size: 15px;
+            color: var(--fg)
+        }
+
+        .sub {
+            font-size: 14px;
+            color: var(--dim);
+            margin: 0 0 24px
+        }
+
+        .grp+.grp {
+            margin-top: 22px
+        }
+
+        .grp h4 {
+            margin: 0 0 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--mut)
+        }
+
+        .tag.on {
+            color: var(--fg);
+            border-color: #3f3f46
+        }
+
+        .tl {
+            position: relative;
+            margin: 0;
+            padding: 0 0 0 28px;
+            list-style: none;
+            border-left: 1px solid var(--line)
+        }
+
+        .tl li {
+            position: relative;
+            padding-bottom: 40px
+        }
+
+        .tl li:last-child {
+            padding-bottom: 0
+        }
+
+        .tl li::before {
+            content: "";
+            position: absolute;
+            left: -33px;
+            top: 8px;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 1px solid var(--mut)
+        }
+
+        .tl .k {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--dim)
+        }
+
+        .tl h3 {
+            margin: 2px 0 4px;
+            font-size: 18px;
+            letter-spacing: -.02em
+        }
+
+        .tl p {
+            margin: 0;
+            color: var(--mut);
+            max-width: 620px;
+            font-size: 15px
+        }
+
+        footer {
+            padding-top: 96px;
+            padding-bottom: 56px;
+            border-top: 1px solid var(--line);
+            margin-top: 24px
+        }
+
+        footer h2 {
+            font-size: clamp(30px, 5vw, 52px);
+            letter-spacing: -.04em;
+            margin-bottom: 16px
+        }
+
+        .social {
+            display: flex;
+            gap: 8px;
+            margin: 36px 0 56px;
+            flex-wrap: wrap
+        }
+
+        .copy {
+            font-family: var(--mono);
+            font-size: 14px
+        }
+
+        .small {
+            color: var(--dim);
+            font-size: 13px
+        }
+
+        .rv {
+            opacity: 0;
+            transform: translateY(14px);
+            transition: opacity .7s, transform .7s
+        }
+
+        .rv.in {
+            opacity: 1;
+            transform: none
+        }
+
+        @media(max-width:760px) {
+            nav {
+                display: none
+            }
+
+            .icons {
+                margin-left: auto;
+                border: 0;
+                padding: 0
+            }
+
+            .bar {
+                padding: 0 16px
+            }
+
+            main,
+            footer {
+                padding: 0 20px
+            }
+
+            section {
+                padding: 72px 0
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            .rv {
+                opacity: 1;
+                transform: none;
+                transition: none
+            }
+
+            html {
+                scroll-behavior: auto
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="glow" id="glow"></div>
+
+    <header>
+        <div class="bar">
+            <a href="#top" class="logo">Nycollas Holanda</a>
+            <nav aria-label="Principal">
+                <a href="#projetos">Projetos</a><a href="#skills">Competências</a><a href="#trajetoria">Trajetória</a><a
+                    href="#contato">Contato</a>
+            </nav>
+            <div class="icons">
+                <a href="https://github.com/nycollasHolanda" aria-label="GitHub" target="_blank" rel="noopener"><svg
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.1-1.3-.4-2.6-1.3-3.5.4-1.1.4-2.4 0-3.5 0 0-1.2 0-3.5 1.5a13.4 13.4 0 0 0-7 0C6.9 2.5 5.7 2.5 5.7 2.5c-.4 1.1-.4 2.4 0 3.5A5 5 0 0 0 4.5 9.5c0 3.5 3 5.5 6 5.5-.4.5-.8 1.4-.9 2.5v4" />
+                        <path d="M9 18c-4.5 2-5-2-7-2" />
+                    </svg></a>
+                <a href="https://linkedin.com/in/nycollas-holanda-341846340" aria-label="LinkedIn" target="_blank" rel="noopener"><svg
+                        viewBox="0 0 24 24">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" />
+                        <rect x="2" y="9" width="4" height="12" />
+                        <circle cx="4" cy="4" r="2" />
+                    </svg></a>
+                <a href="https://wa.me/" aria-label="WhatsApp" target="_blank" rel="noopener"><svg viewBox="0 0 24 24">
+                        <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+                        <path
+                            d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1" />
+                    </svg></a>
+                <a href="mailto:holandanycollas@gmail.com" aria-label="E-mail"><svg viewBox="0 0 24 24">
+                        <rect x="2" y="4" width="20" height="16" rx="2" />
+                        <path d="m22 7-10 6L2 7" />
+                    </svg></a>
+            </div>
+        </div>
+    </header>
+
+    <main id="top">
+        <section class="hero">
+            <div class="hi">Olá, eu sou</div>
+            <h1>Nycollas Holanda.<br><span>Do front ao servidor, sempre evoluindo.</span></h1>
+            <p class="lead">Desenvolvedor de software focado em alta performance. Construo aplicações Web e Mobile e
+                entendo a infraestrutura que as mantém no ar.</p>
+            <div class="btns">
+                <a class="btn pri" href="#projetos">Ver projetos</a>
+                <a class="btn" href="#contato">Entrar em contato</a>
+            </div>
+        </section>
+
+        <section id="projetos" class="rv">
+            <h2>Projetos em destaque</h2>
+            <div class="grid">
+                <article class="card">
+                    <h3>Projeto Um</h3>
+                    <p>Descreva em uma frase o problema que resolve e o resultado entregue.</p>
+                    <div class="tags"><span class="tag">React</span><span class="tag">TypeScript</span><span
+                            class="tag">Tailwind</span></div>
+                    <div class="links"><a href="#">Live demo</a><a href="#">Repositório</a></div>
+                </article>
+                <article class="card">
+                    <h3>Projeto Dois</h3>
+                    <p>Descreva em uma frase o problema que resolve e o resultado entregue.</p>
+                    <div class="tags"><span class="tag">React Native</span><span class="tag">Node.js</span><span
+                            class="tag">SQLite</span></div>
+                    <div class="links"><a href="#">Live demo</a><a href="#">Repositório</a></div>
+                </article>
+                <article class="card">
+                    <h3>Projeto Três</h3>
+                    <p>Descreva em uma frase o problema que resolve e o resultado entregue.</p>
+                    <div class="tags"><span class="tag">Python</span><span class="tag">FastAPI</span><span
+                            class="tag">MySQL</span></div>
+                    <div class="links"><a href="#">Live demo</a><a href="#">Repositório</a></div>
+                </article>
+            </div>
+        </section>
+
+        <section id="skills" class="rv">
+            <h2>Competências</h2>
+            <div class="skills">
+                <div class="card">
+                    <h3>Domínio técnico ativo</h3>
+                    <p class="sub">O que uso no dia a dia.</p>
+                    <div class="grp">
+                        <h4>Frontend e Mobile</h4>
+                        <div class="tags"><span class="tag on">React JS</span><span class="tag on">React
+                                Native</span><span class="tag on">TypeScript</span><span
+                                class="tag on">JavaScript</span><span class="tag on">Tailwind CSS</span><span
+                                class="tag on">Sass</span></div>
+                    </div>
+                    <div class="grp">
+                        <h4>Backend e bancos de dados</h4>
+                        <div class="tags"><span class="tag on">Node.js</span><span class="tag on">Python</span><span
+                                class="tag on">MySQL</span><span class="tag on">SQLite</span></div>
+                    </div>
+                    <div class="grp">
+                        <h4>Infraestrutura</h4>
+                        <div class="tags"><span class="tag on">Redes / NOC</span><span class="tag on">Diagnóstico
+                                Linux</span><span class="tag on">Diagnóstico Windows</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Em aprofundamento</h3>
+                    <p class="sub">Para onde estou crescendo.</p>
+                    <div class="grp">
+                        <h4>Frameworks de backend</h4>
+                        <div class="tags"><span class="tag">Django</span><span class="tag">FastAPI</span></div>
+                    </div>
+                    <div class="grp">
+                        <h4>Arquitetura</h4>
+                        <div class="tags"><span class="tag">Arquitetura de software</span><span class="tag">APIs
+                                REST</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="trajetoria" class="rv">
+            <h2>Trajetória e experiência</h2>
+            <ol class="tl">
+                <li>
+                    <div class="k">Experiência</div>
+                    <h3>Agility Telecom — NOC</h3>
+                    <p>Monitoramento e diagnóstico de redes em ambiente crítico. Adicione aqui um resultado concreto.
+                    </p>
+                </li>
+                <li>
+                    <div class="k">Experiência</div>
+                    <h3>Speed Direct</h3>
+                    <p>Atuação prática com tecnologia e suporte. Adicione aqui um resultado concreto.</p>
+                </li>
+                <li>
+                    <div class="k">Formação</div>
+                    <h3>IMD — UFRN</h3>
+                    <p>Formação em tecnologia da informação, com projetos práticos.</p>
+                </li>
+                <li>
+                    <div class="k">Formação</div>
+                    <h3>IFRN</h3>
+                    <p>Base técnica e primeiros projetos de desenvolvimento.</p>
+                </li>
+            </ol>
+        </section>
+    </main>
+
+    <footer id="contato" class="rv">
+        <h2>Vamos construir algo juntos.</h2>
+        <p class="lead" style="margin:0">Abra o e-mail ou copie o endereço com um clique.</p>
+        <div class="social">
+            <button class="btn pri copy" id="copy" type="button">
+                <svg viewBox="0 0 24 24" id="ci">
+                    <rect x="9" y="9" width="13" height="13" rx="2" />
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+                <span id="ct">holandanycollas@gmail.com</span>
+            </button>
+            <a class="btn" href="https://github.com/nycollasHolanda" target="_blank" rel="noopener">GitHub</a>
+            <a class="btn" href="https://linkedin.com/in/nycollas-holanda-341846340" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="btn" href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+        <div class="small">© 2026 Nycollas Holanda</div>
+    </footer>
+
+    <script>
+        const g = document.getElementById('glow');
+        addEventListener('pointermove', e => { g.style.setProperty('--x', e.clientX + 'px'); g.style.setProperty('--y', e.clientY + 'px') }, { passive: true });
+        const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) } }), { threshold: .12 });
+        document.querySelectorAll('.rv').forEach(el => io.observe(el));
+        const mail = 'holandanycollas@gmail.com', ct = document.getElementById('ct');
+        document.getElementById('copy').addEventListener('click', async () => {
+            let ok = false;
+            try { await navigator.clipboard.writeText(mail); ok = true } catch (e) {
+                try { const t = document.createElement('textarea'); t.value = mail; document.body.appendChild(t); t.select(); ok = document.execCommand('copy'); t.remove() } catch (_) { }
+            }
+            ct.textContent = ok ? 'E-mail copiado' : 'Copie: ' + mail;
+            setTimeout(() => ct.textContent = mail, 2000);
+        });
+    </script>
+</body>
+
+</html>
